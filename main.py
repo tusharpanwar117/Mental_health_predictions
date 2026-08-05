@@ -5,8 +5,33 @@ from typing import Literal
 import pandas as pd
 from fastapi.middleware.cors import CORSMiddleware
 
-model = joblib.load('Mental_health_model.pkl')    # loading ML model
+# ---------------------------------------------------------------------------
+# Compatibility shim.
+#
+# Mental_health_model.pkl was pickled with scikit-learn 1.6.x, which stored a
+# private helper class called _RemainderColsList inside the ColumnTransformer.
+# scikit-learn 1.7 deleted that class, so unpickling on any newer version dies
+# with "no attribute '_RemainderColsList'" before the app can even start.
+#
+# Recreating a stand-in under the same name gives the unpickler something to
+# bind to. The class is only a list subclass used to track passthrough columns,
+# and this pipeline drops the remainder anyway, so nothing is lost.
+#
+# This is a patch, not a fix. The real fix is to re-run joblib.dump() in the
+# notebook on the scikit-learn version you deploy with, then delete this block.
+# ---------------------------------------------------------------------------
+import sklearn
+import sklearn.compose._column_transformer as _ct
 
+if not hasattr(_ct, '_RemainderColsList'):
+    class _RemainderColsList(list):
+        pass
+    _ct._RemainderColsList = _RemainderColsList
+
+print(f"scikit-learn version in use: {sklearn.__version__}")
+
+model = joblib.load('Mental_health_model.pkl')    # loading ML model
+print("Model loaded successfully.")
 
 # ...--> required, le=less than equal to, ge=greater than equal to
 # Pydantic model (data validation)
