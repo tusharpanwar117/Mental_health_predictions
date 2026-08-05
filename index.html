@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Daylight — What your daily habits add up to</title>
+<meta name="description" content="Answer twelve questions about sleep, screen time, study and stress, and see what your daily habits add up to." />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+<!-- ambient sky -->
+<div class="sky" aria-hidden="true">
+  <span class="sky__glow sky__glow--1"></span>
+  <span class="sky__glow sky__glow--2"></span>
+  <span class="sky__stars"></span>
+</div>
+
+<!-- offline notice (only appears if the service can't be reached) -->
+<div id="offline-bar" class="offline-bar hidden" role="status">
+  Can't connect right now — check your connection and try again.
+</div>
+
+<div class="wrap">
+
+  <!-- ================= HERO ================= -->
+  <header class="hero">
+    <div class="brand">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><circle cx="16" cy="20" r="7" fill="var(--sun)"/>
+          <path d="M4 20h24" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".35"/>
+          <path d="M16 4v3M27 9l-2 2M5 9l2 2" stroke="var(--sun)" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>
+      Daylight
+    </div>
+
+    <h1 class="hero__title">
+      What does a normal day<br /><em>add up to?</em>
+    </h1>
+
+    <p class="hero__lede">
+      Sleep, screen time, study, movement, stress. Answer twelve quick questions and see
+      where your daily habits land on a wellbeing score out of ten.
+    </p>
+
+    <a href="#check" class="btn btn--primary hero__cta" id="start-btn">
+      Start the check
+      <svg viewBox="0 0 24 24" class="i" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
+    </a>
+
+    <p class="hero__meta">Takes about a minute · Nothing is saved anywhere but your own browser</p>
+  </header>
+
+  <!-- ================= THE CHECK ================= -->
+  <main id="check" class="card" tabindex="-1">
+
+    <!-- ---------- STEPPER ---------- -->
+    <div id="stepper">
+      <div class="steps" role="tablist" aria-label="Progress">
+        <button type="button" class="steps__item is-active" data-goto="1" role="tab" aria-selected="true">
+          <span class="steps__num">1</span><span class="steps__label">You</span>
+        </button>
+        <span class="steps__line"><i id="steps-fill"></i></span>
+        <button type="button" class="steps__item" data-goto="2" role="tab" aria-selected="false">
+          <span class="steps__num">2</span><span class="steps__label">Screens</span>
+        </button>
+        <span class="steps__line"><i id="steps-fill-2"></i></span>
+        <button type="button" class="steps__item" data-goto="3" role="tab" aria-selected="false">
+          <span class="steps__num">3</span><span class="steps__label">Your day</span>
+        </button>
+      </div>
+
+      <form id="check-form" novalidate>
+
+        <!-- ===== STEP 1 ===== -->
+        <section class="step is-active" data-step="1">
+          <h2 class="step__title">A little about you</h2>
+          <p class="step__hint">This helps place your answers in context.</p>
+
+          <div class="grid-2">
+            <div class="field" data-slider data-suffix=" yrs">
+              <div class="field__head">
+                <label for="age">Age</label>
+                <output class="bubble" data-value>21 yrs</output>
+              </div>
+              <input type="range" id="age" name="age" min="12" max="60" step="1" value="21" class="range" />
+              <p class="field__note" data-note></p>
+            </div>
+
+            <div class="field">
+              <div class="field__head"><label for="country">Where you live</label></div>
+              <input type="text" id="country" name="country" list="countries" placeholder="Type your country"
+                     autocomplete="country-name" class="text-input" />
+              <datalist id="countries">
+                <option>India</option><option>USA</option><option>UK</option><option>Canada</option>
+                <option>Australia</option><option>Germany</option><option>France</option><option>Spain</option>
+                <option>Mexico</option><option>Turkey</option><option>Japan</option><option>Brazil</option>
+                <option>Nigeria</option><option>Pakistan</option><option>Bangladesh</option><option>Indonesia</option>
+                <option>Italy</option><option>Netherlands</option><option>South Korea</option><option>South Africa</option>
+              </datalist>
+              <p class="field__error" data-error-for="country"></p>
+            </div>
+          </div>
+
+          <div class="grid-2 mt-6">
+            <div class="field" data-pills data-name="gender">
+              <label class="field__label">Gender</label>
+              <div class="pills">
+                <button type="button" class="pill" data-value="Male">Male</button>
+                <button type="button" class="pill" data-value="Female">Female</button>
+              </div>
+              <input type="hidden" name="gender" />
+              <p class="field__error" data-error-for="gender"></p>
+            </div>
+
+            <div class="field" data-pills data-name="academic_level">
+              <label class="field__label">What you're studying at</label>
+              <div class="pills">
+                <button type="button" class="pill" data-value="High School">School</button>
+                <button type="button" class="pill" data-value="Undergraduate">Undergrad</button>
+                <button type="button" class="pill" data-value="Graduate">Postgrad</button>
+              </div>
+              <input type="hidden" name="academic_level" />
+              <p class="field__error" data-error-for="academic_level"></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== STEP 2 ===== -->
+        <section class="step" data-step="2" hidden>
+          <h2 class="step__title">You and your phone</h2>
+          <p class="step__hint">Rough numbers are fine — go with a normal day, not your best one.</p>
+
+          <div class="field">
+            <label class="field__label" for="most_used_platform">App you spend the most time in</label>
+            <div class="select-wrap">
+              <select id="most_used_platform" name="most_used_platform" class="text-input">
+                <option value="">Choose one</option>
+                <option>Instagram</option><option>YouTube</option><option>WhatsApp</option>
+                <option>TikTok</option><option>Snapchat</option><option>Facebook</option>
+                <option>Twitter</option><option>LinkedIn</option><option>WeChat</option>
+                <option>LINE</option><option>KakaoTalk</option><option>VKontakte</option>
+              </select>
+              <svg class="select-wrap__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
+            <p class="field__error" data-error-for="most_used_platform"></p>
+          </div>
+
+          <div class="field mt-6" data-pills data-name="purpose_of_use">
+            <label class="field__label">Mostly, you're there to</label>
+            <div class="pills">
+              <button type="button" class="pill" data-value="Entertainment">Be entertained</button>
+              <button type="button" class="pill" data-value="Education">Learn</button>
+              <button type="button" class="pill" data-value="Networking">Keep in touch</button>
+              <button type="button" class="pill" data-value="News">Follow news</button>
+            </div>
+            <input type="hidden" name="purpose_of_use" />
+            <p class="field__error" data-error-for="purpose_of_use"></p>
+          </div>
+
+          <div class="grid-2 mt-6">
+            <div class="field" data-slider data-suffix="h" data-typical="4–6 hours">
+              <div class="field__head">
+                <label for="avg_daily_usage_hours">Time on your phone daily</label>
+                <output class="bubble" data-value>5.0h</output>
+              </div>
+              <input type="range" id="avg_daily_usage_hours" name="avg_daily_usage_hours"
+                     min="0" max="16" step="0.5" value="5" class="range" />
+              <p class="field__note" data-note></p>
+            </div>
+
+            <div class="field" data-slider data-suffix="×" data-typical="140–200 times">
+              <div class="field__head">
+                <label for="daily_unlocks">Times you pick it up</label>
+                <output class="bubble" data-value>150×</output>
+              </div>
+              <input type="range" id="daily_unlocks" name="daily_unlocks"
+                     min="0" max="400" step="5" value="150" class="range" />
+              <p class="field__note" data-note></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== STEP 3 ===== -->
+        <section class="step" data-step="3" hidden>
+          <h2 class="step__title">The shape of your day</h2>
+          <p class="step__hint">These four are the ones that move the needle most.</p>
+
+          <div class="grid-2">
+            <div class="field" data-slider data-suffix="h" data-typical="6–8 hours">
+              <div class="field__head">
+                <label for="sleep_hours_per_night">Sleep each night</label>
+                <output class="bubble" data-value>7.0h</output>
+              </div>
+              <input type="range" id="sleep_hours_per_night" name="sleep_hours_per_night"
+                     min="0" max="14" step="0.5" value="7" class="range" />
+              <p class="field__note" data-note></p>
+            </div>
+
+            <div class="field" data-slider data-suffix="h" data-typical="1.5–4 hours">
+              <div class="field__head">
+                <label for="study_hours">Time studying</label>
+                <output class="bubble" data-value>3.0h</output>
+              </div>
+              <input type="range" id="study_hours" name="study_hours"
+                     min="0" max="14" step="0.5" value="3" class="range" />
+              <p class="field__note" data-note></p>
+            </div>
+
+            <div class="field" data-slider data-suffix="h" data-typical="1–2 hours">
+              <div class="field__head">
+                <label for="physical_activity_hours">Moving your body</label>
+                <output class="bubble" data-value>1.5h</output>
+              </div>
+              <input type="range" id="physical_activity_hours" name="physical_activity_hours"
+                     min="0" max="8" step="0.5" value="1.5" class="range" />
+              <p class="field__note" data-note></p>
+            </div>
+
+            <div class="field" data-pills data-name="stress_level">
+              <label class="field__label">How stressed you've felt lately</label>
+              <div class="pills">
+                <button type="button" class="pill" data-value="Low">Low</button>
+                <button type="button" class="pill" data-value="Medium">Medium</button>
+                <button type="button" class="pill" data-value="High">High</button>
+                <button type="button" class="pill" data-value="Very High">Very high</button>
+              </div>
+              <input type="hidden" name="stress_level" />
+              <p class="field__error" data-error-for="stress_level"></p>
+            </div>
+          </div>
+
+          <!-- live day ribbon -->
+          <div class="day">
+            <div class="day__head">
+              <span class="day__title">Where your hours go</span>
+              <span class="day__total" id="day-total">0h of 24</span>
+            </div>
+            <div class="day__bar" id="day-bar"></div>
+            <div class="day__legend" id="day-legend"></div>
+            <p class="day__warn hidden" id="day-warn"></p>
+          </div>
+        </section>
+
+        <!-- ---------- NAV ---------- -->
+        <div class="nav-row">
+          <button type="button" class="btn btn--quiet" id="back-btn" hidden>Back</button>
+          <button type="button" class="btn btn--primary" id="next-btn">
+            Continue
+            <svg viewBox="0 0 24 24" class="i" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
+          </button>
+          <button type="submit" class="btn btn--primary" id="submit-btn" hidden>
+            <span class="spinner hidden" id="spinner"></span>
+            <span id="submit-label">See my score</span>
+          </button>
+        </div>
+
+        <p class="form-error hidden" id="form-error" role="alert"></p>
+      </form>
+    </div>
+
+    <!-- ---------- RESULT ---------- -->
+    <div id="result" hidden>
+
+      <!-- sunrise gauge: the sun's height is the score -->
+      <div class="sunrise">
+        <svg viewBox="0 0 340 200" class="sunrise__svg" role="img" aria-labelledby="sun-desc">
+          <title id="sun-desc">Your score shown as the height of a rising sun</title>
+          <defs>
+            <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" id="sky-top" stop-color="#141230" />
+              <stop offset="100%" id="sky-bottom" stop-color="#2a2140" />
+            </linearGradient>
+            <radialGradient id="sunGlow">
+              <stop offset="0%" stop-color="var(--sun)" stop-opacity=".7" />
+              <stop offset="100%" stop-color="var(--sun)" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+
+          <rect x="0" y="0" width="340" height="164" rx="18" fill="url(#skyGrad)" />
+          <g id="sun-stars"></g>
+          <path d="M46 164 A 124 124 0 0 1 170 40" fill="none" stroke="rgba(255,255,255,.13)"
+                stroke-width="1.5" stroke-dasharray="3 7" />
+          <circle id="sun-halo" cx="46" cy="164" r="54" fill="url(#sunGlow)" />
+          <circle id="sun" cx="46" cy="164" r="18" fill="var(--sun)" />
+          <rect x="0" y="158" width="340" height="6" fill="rgba(255,255,255,.22)" />
+        </svg>
+
+        <div class="sunrise__readout">
+          <span class="score" id="score-value">0.0</span>
+          <span class="score__of">out of 10</span>
+        </div>
+      </div>
+
+      <p class="band" id="band-label"></p>
+      <p class="band__text" id="band-text"></p>
+
+      <!-- position on the scale -->
+      <div class="scale">
+        <div class="scale__track">
+          <span class="scale__typical"></span>
+          <span class="scale__marker" id="scale-marker"></span>
+        </div>
+        <div class="scale__labels"><span>Running low</span><span>Steady</span><span>Thriving</span></div>
+      </div>
+
+      <!-- what-if -->
+      <section class="tweaks">
+        <div class="tweaks__head">
+          <h3>What a small change would do</h3>
+          <span class="spinner spinner--xs hidden" id="tweaks-spinner"></span>
+        </div>
+        <div id="tweaks-list" class="tweaks__list"></div>
+      </section>
+
+      <!-- recap -->
+      <details class="recap">
+        <summary>See what you answered</summary>
+        <dl id="recap-list"></dl>
+      </details>
+
+      <div class="result-actions">
+        <button type="button" class="btn btn--primary" id="again-btn">Try different answers</button>
+        <button type="button" class="btn btn--quiet" id="save-btn">Save a copy</button>
+      </div>
+
+      <p class="disclaimer">
+        This is a wellbeing estimate based on habit patterns, not a diagnosis and not medical advice.
+        If something in your life feels heavy, talking to a counsellor, doctor or someone you trust
+        will always do more than a number can.
+      </p>
+    </div>
+
+    <!-- ---------- ERROR ---------- -->
+    <div id="error-panel" hidden>
+      <div class="error-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4.5M12 16v.01"/></svg>
+      </div>
+      <h2 class="step__title">That didn't go through</h2>
+      <p class="step__hint" id="error-text"></p>
+      <div class="result-actions">
+        <button type="button" class="btn btn--primary" id="retry-btn">Try again</button>
+        <button type="button" class="btn btn--quiet" id="error-back-btn">Change my answers</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= PAST CHECKS ================= -->
+  <section id="history" class="history hidden">
+    <h3 class="history__title">Your recent checks</h3>
+    <div id="history-list" class="history__list"></div>
+    <button type="button" class="btn btn--quiet btn--sm" id="clear-history">Clear</button>
+  </section>
+
+  <footer class="footer">
+    <p>Daylight · a small tool for noticing your own patterns</p>
+  </footer>
+</div>
+
+<div id="toasts" class="toasts"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
