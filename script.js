@@ -6,7 +6,7 @@
 /* --------------------------------------------------------------------------
    CONFIG — the only line to change when the service moves
    -------------------------------------------------------------------------- */
-const API_BASE = 'http://127.0.0.1:8000'
+const API_BASE = 'https://mental-health-score-predictions-hn6k.onrender.com'
 
 /* --------------------------------------------------------------------------
    Constants
