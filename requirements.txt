@@ -1,15 +1,7 @@
 fastapi
-uvicorn[standard]
+uvicorn
 pydantic
 pandas
 joblib
+scikit-learn
 
-# Pinned deliberately. Mental_health_model.pkl was created with scikit-learn
-# 1.6.1. Loading a pickled pipeline under a different minor version breaks:
-# 1.7 removed the internal _RemainderColsList class that this pickle refers to.
-#
-# 1.6.1 ships wheels for Python 3.9-3.13 only, which is why .python-version
-# pins the runtime to 3.11 — on 3.14 pip silently resolves to a newer
-# scikit-learn and the model fails to unpickle at import time.
-scikit-learn==1.6.1
-numpy<2.3
